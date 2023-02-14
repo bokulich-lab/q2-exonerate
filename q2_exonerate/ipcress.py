@@ -46,27 +46,31 @@ def _process_one_product(line: str) -> dict:
         "target": line[4].split("Target:")[-1].strip(),
         "match_orientation": line[7].split(":")[-1].strip(),
     }
+
     matches = line[5].lstrip().split(" ")
     if product["match_orientation"] == "revcomp":
-        product["matches_fwd"] = matches[2]
-        product["matches_rev"] = matches[1]
+        product.update({"matches_fwd":  matches[2], "matches_rev": matches[1]})
     else:
-        product["matches_fwd"] = matches[1]
-        product["matches_rev"] = matches[2]
+        product.update({"matches_fwd": matches[1], "matches_rev": matches[2]})
+
     product_length = line[6].lstrip().split(" ")
-    product["length"] = int(product_length[1])
     ranges = product_length[4][:-1].split("-")
-    product["range_min"] = int(ranges[0])
-    product["range_max"] = int(ranges[1])
-    product["start_position"] = int(
-        line[16].split("start")[1].strip().split(" ")[0]
-    )
-    product["id"] = line[16].strip()[1:]
-    product["sequence"] = ""
-    for l in line[17:]:
-        if not l or "completed ipcress analysis" in l:
+    product.update({
+        "length": int(product_length[1]),
+        "range_min": int(ranges[0]),
+        "range_max": int(ranges[1]),
+        "start_position": int(
+            line[16].split("start")[1].strip().split(" ")[0]
+        ),
+        "id": line[16].strip()[1:],
+        "sequence": ""
+    })
+
+    for l_ in line[17:]:
+        if not l_ or "completed ipcress analysis" in l_:
             break
-        product["sequence"] += l
+        product["sequence"] += l_
+
     return product
 
 
