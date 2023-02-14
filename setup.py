@@ -20,9 +20,7 @@ setup(
     author_email="ziemski.michal@gmail.com",
     description="This is a template for building a new QIIME 2 plugin.",
     url="https://github.com/bokulich-lab/q2-plugin-template",
-    entry_points={
-        "qiime2.plugins": ["q2-exonerate=q2_exonerate.plugin_setup:plugin"]
-    },
+    entry_points={"qiime2.plugins": ["q2-exonerate=q2_exonerate.plugin_setup:plugin"]},
     package_data={
         "q2_exonerate": ["citations.bib"],
     },

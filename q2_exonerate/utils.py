@@ -21,5 +21,7 @@ def run_command(cmd, verbose=True):
         print(EXTERNAL_CMD_WARNING)
         print("\nCommand:", end=" ")
         print(" ".join(cmd), end="\n\n")
-    out = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = subprocess.run(
+        cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     return out.stdout

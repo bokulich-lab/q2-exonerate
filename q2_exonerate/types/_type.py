@@ -8,5 +8,5 @@
 
 from qiime2.core.type import SemanticType
 
-IPCRessExperiments = SemanticType('IPCRessExperiments')
-PCRProductMetadata = SemanticType('PCRProductMetadata')
+IPCRessExperiments = SemanticType("IPCRessExperiments")
+PCRProductMetadata = SemanticType("PCRProductMetadata")
