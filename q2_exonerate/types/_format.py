@@ -19,14 +19,14 @@ class IPCRessExperimentFormat(model.TextFileFormat):
     def _validate(self):
         df = pd.read_csv(str(self), sep=' ')
 
-        missing_cols = [
-            x for x in self.HEADER_FIELDS if x not in df.columns
-        ]
-        if missing_cols:
-            raise ValidationError(
-                'Some required columns are missing from the ipcress '
-                f'experiment file: {", ".join(missing_cols)}.'
-            )
+        # missing_cols = [
+        #     x for x in self.HEADER_FIELDS if x not in df.columns
+        # ]
+        # if missing_cols:
+        #     raise ValidationError(
+        #         'Some required columns are missing from the ipcress '
+        #         f'experiment file: {", ".join(missing_cols)}.'
+        #     )
 
         if df.shape[1] > 5:
             raise ValidationError(
@@ -34,12 +34,12 @@ class IPCRessExperimentFormat(model.TextFileFormat):
                 f'{df.shape[1]} were found.'
             )
 
-        if df['min_length'].min() < 0:
+        if df.iloc[:, 3].min() < 0:
             raise ValidationError(
                 'The minimum length of a PCR product cannot be negative.'
             )
 
-        if df['max_length'].min() < 0:
+        if df.iloc[:, 4].min() < 0:
             raise ValidationError(
                 'The maximum length of a PCR product cannot be negative.'
             )
@@ -50,4 +50,35 @@ class IPCRessExperimentFormat(model.TextFileFormat):
 
 IPCRessExperimentDirFmt = model.SingleFileDirectoryFormat(
     'IPCRessExperimentDirFmt', 'experiments.ipcress', IPCRessExperimentFormat
+)
+
+
+class PCRProductMetadataFormat(model.TextFileFormat):
+    REQUIRED_COLUMNS = {
+        'experiment',
+        'target',
+        'match_orientation',
+        'matches_rev',
+        'matches_fwd',
+        'length',
+        'range_min',
+        'range_max',
+        'start_position'
+    }
+
+    def _validate_(self, level):
+        with open(str(self)) as fh:
+            line = fh.readline()
+
+        if len(line.strip()) == 0:
+            raise ValidationError("Failed to locate header.")
+
+        header = set(line.strip().split('\t'))
+        for column in sorted(self.REQUIRED_COLUMNS):
+            if column not in header:
+                raise ValidationError(f"{column} is not a column")
+
+
+PCRProductMetadataDirFmt = model.SingleFileDirectoryFormat(
+    'PCRProductMetadataDirFmt', 'product-metadata.tsv', PCRProductMetadataFormat
 )

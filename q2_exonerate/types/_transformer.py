@@ -7,9 +7,11 @@
 # ----------------------------------------------------------------------------
 import pandas as pd
 import qiime2
+from qiime2 import Metadata
 
+from ._type import PCRProductMetadata
 from ..plugin_setup import plugin
-from ._format import IPCRessExperimentFormat
+from ._format import IPCRessExperimentFormat, PCRProductMetadataFormat
 
 
 def _exp_fmt_to_metadata(ff):
@@ -31,3 +33,20 @@ def _2(ff: IPCRessExperimentFormat) -> pd.DataFrame:
     with ff.open() as fh:
         df = pd.read_csv(fh, sep=' ', header=0, index_col=0)
         return df
+
+
+@plugin.register_transformer
+def _3(data: pd.DataFrame) -> PCRProductMetadataFormat:
+    ff = PCRProductMetadataFormat()
+    Metadata(data).save(str(ff))
+    return ff
+
+
+@plugin.register_transformer
+def _4(ff: PCRProductMetadataFormat) -> pd.DataFrame:
+    return Metadata.load(str(ff)).to_dataframe()
+
+
+@plugin.register_transformer
+def _5(ff: PCRProductMetadataFormat) -> Metadata:
+    return Metadata.load(str(ff))

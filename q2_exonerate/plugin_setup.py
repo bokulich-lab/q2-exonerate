@@ -8,12 +8,16 @@
 import importlib
 
 from q2_types.feature_data import (FeatureData, Sequence)
+from qiime2.core.type import Int, Range
 from qiime2.plugin import Citations, Plugin
 
 from q2_exonerate import __version__
 from q2_exonerate.ipcress import simulate_pcr
-from q2_exonerate.types._format import IPCRessExperimentFormat, IPCRessExperimentDirFmt
-from q2_exonerate.types._type import IPCRessExperiments
+from q2_exonerate.types._format import (IPCRessExperimentFormat,
+                                        IPCRessExperimentDirFmt,
+                                        PCRProductMetadataFormat,
+                                        PCRProductMetadataDirFmt)
+from q2_exonerate.types._type import IPCRessExperiments, PCRProductMetadata
 
 citations = Citations.load("citations.bib", package="q2_exonerate")
 
@@ -32,15 +36,27 @@ plugin.methods.register_function(
         'templates': FeatureData[Sequence],
         'experiments': IPCRessExperiments,
     },
-    parameters={},
-    outputs=[('products', FeatureData[Sequence]),],
+    parameters={
+        'seed': Int % Range(0, None),
+        'memory': Int % Range(1, None),
+        'mismatch': Int % Range(0, None)
+    },
+    outputs=[
+        ('products', FeatureData[Sequence]),
+        ('product_metadata', PCRProductMetadata)
+    ],
     input_descriptions={
         'templates': 'The templates to simulate PCR on.',
         'experiments': 'The ipcress experimental details.',
     },
-    parameter_descriptions={},
+    parameter_descriptions={
+        'seed': 'Seed length (use zero for full length).',
+        'memory': 'Memory limit for FSM data.',
+        'mismatch': 'Number of mismatches allowed per primer.'
+    },
     output_descriptions={
         'products': 'The simulated PCR products.',
+        'product_metadata': 'Additional information about every product.'
     },
     name='In-silico PCR using ipcress.',
     description=(
@@ -50,10 +66,16 @@ plugin.methods.register_function(
     citations=[citations['slater2005']]
 )
 
-plugin.register_formats(IPCRessExperimentFormat, IPCRessExperimentDirFmt)
-plugin.register_semantic_types(IPCRessExperiments)
+plugin.register_formats(
+    IPCRessExperimentFormat, IPCRessExperimentDirFmt,
+    PCRProductMetadataFormat, PCRProductMetadataDirFmt
+)
+plugin.register_semantic_types(IPCRessExperiments, PCRProductMetadata)
 plugin.register_semantic_type_to_format(
     IPCRessExperiments, artifact_format=IPCRessExperimentDirFmt
+)
+plugin.register_semantic_type_to_format(
+    PCRProductMetadata, artifact_format=PCRProductMetadataDirFmt
 )
 
 importlib.import_module('q2_exonerate.types._transformer')
