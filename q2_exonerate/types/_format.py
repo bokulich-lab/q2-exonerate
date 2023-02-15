@@ -20,18 +20,9 @@ class IPCRessExperimentFormat(model.TextFileFormat):
     ]
 
     def _validate(self):
-        df = pd.read_csv(str(self), sep=" ")
+        df = pd.read_csv(str(self), sep=" ", header=None)
 
-        # missing_cols = [
-        #     x for x in self.HEADER_FIELDS if x not in df.columns
-        # ]
-        # if missing_cols:
-        #     raise ValidationError(
-        #         'Some required columns are missing from the ipcress '
-        #         f'experiment file: {", ".join(missing_cols)}.'
-        #     )
-
-        if df.shape[1] > 5:
+        if df.shape[1] != 5:
             raise ValidationError(
                 "The ipcress experiment file should have 5 columns. "
                 f"{df.shape[1]} were found."
@@ -63,6 +54,8 @@ class PCRProductMetadataFormat(model.TextFileFormat):
         "match_orientation",
         "matches_rev",
         "matches_fwd",
+        "matches_rev_frac",
+        "matches_fwd_frac",
         "length",
         "range_min",
         "range_max",
@@ -79,7 +72,7 @@ class PCRProductMetadataFormat(model.TextFileFormat):
         header = set(line.strip().split("\t"))
         for column in sorted(self.REQUIRED_COLUMNS):
             if column not in header:
-                raise ValidationError(f"{column} is not a column")
+                raise ValidationError(f"'{column}' is not a column.")
 
 
 PCRProductMetadataDirFmt = model.SingleFileDirectoryFormat(

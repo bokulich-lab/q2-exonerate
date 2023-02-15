@@ -1,0 +1,40 @@
+
+Ipcress result
+--------------
+ Experiment: ITS9mun
+    Primers: A B
+     Target: NC_012867.1:filter(unmasked) Candida dubliniensis CD36 chromosome R, complete sequence
+    Matches: 17/17 19/19
+    Product: 2072 bp (range 500-5000)
+Result type: forward
+
+...GTACACACCGCCCGTCG............................. # forward
+   |||||||||||||||||-->
+5'-GTACACACCGCCCGTCG-3' 3'-CTAGAACCWCCATCATYGT-5' # primers
+                        <--|||||||| ||||||| ||
+...........................CTAGAACCACCATCATCGT... # revcomp
+--
+ipcress: NC_012867.1:filter(unmasked) ITS9mun 2072 A 1864982 0 B 1867035 0 forward
+>ITS9mun_product_1 seq NC_012867.1:filter(unmasked) start 1864982 length 2072
+GTACACACCGCCCGTCGCTACTACCGATTGAATGGCTTAGTGAGGCTTCAAGATTGGCGCCGCGGGAGGG
+GCAA
+
+Ipcress result
+--------------
+ Experiment: ITS9mun
+    Primers: B A
+     Target: NC_042506.1:filter(unmasked) Pichia kudriavzevii chromosome 1, complete sequence
+    Matches: 19/19 17/17
+    Product: 2040 bp (range 500-5000)
+Result type: revcomp
+
+...TGCTACTACCACCAAGATC........................... # forward
+   || ||||||| ||||||||-->
+5'-TGYTACTACCWCCAAGATC-3' 3'-GCTGCCCGCCACACATG-5' # primers
+                          <--|||||||||||||||||
+.............................GCTGCCCGCCACACATG... # revcomp
+--
+ipcress: NC_042506.1:filter(unmasked) ITS9mun 2040 B 1904 0 A 3927 0 revcomp
+>ITS9mun_product_2 seq NC_042506.1:filter(unmasked) start 1904 length 2040
+GTACACACCGCCCGTCGCTACTACCGATTGAATGGCTTAGTGAGGCTTCAAGATTGGCGCCGCGGGAG
+-- completed ipcress analysis

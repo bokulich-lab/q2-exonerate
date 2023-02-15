@@ -37,10 +37,10 @@ def _extract_pcr_meta(products: List[dict]) -> pd.DataFrame:
 
 def _calculate_match_frac(match: str) -> float:
     match_split = match.split("/")
-    return float(match_split[0])/float(match_split[1])
+    return float(match_split[0]) / float(match_split[1])
 
 
-def _process_one_product(line: str) -> dict:
+def _process_one_product(line: List[str]) -> dict:
     product = {
         "experiment": line[2].split(":")[-1].strip(),
         "target": line[4].split("Target:")[-1].strip(),
@@ -49,22 +49,22 @@ def _process_one_product(line: str) -> dict:
 
     matches = line[5].lstrip().split(" ")
     if product["match_orientation"] == "revcomp":
-        product.update({"matches_fwd":  matches[2], "matches_rev": matches[1]})
+        product.update({"matches_fwd": matches[2], "matches_rev": matches[1]})
     else:
         product.update({"matches_fwd": matches[1], "matches_rev": matches[2]})
 
     product_length = line[6].lstrip().split(" ")
     ranges = product_length[4][:-1].split("-")
-    product.update({
-        "length": int(product_length[1]),
-        "range_min": int(ranges[0]),
-        "range_max": int(ranges[1]),
-        "start_position": int(
-            line[16].split("start")[1].strip().split(" ")[0]
-        ),
-        "id": line[16].strip()[1:],
-        "sequence": ""
-    })
+    product.update(
+        {
+            "length": int(product_length[1]),
+            "range_min": int(ranges[0]),
+            "range_max": int(ranges[1]),
+            "start_position": int(line[16].split("start")[1].strip().split(" ")[0]),
+            "id": line[16].strip()[1:],
+            "sequence": "",
+        }
+    )
 
     for l_ in line[17:]:
         if not l_ or "completed ipcress analysis" in l_:
@@ -74,7 +74,7 @@ def _process_one_product(line: str) -> dict:
     return product
 
 
-def _process_pcr_products(lines: list) -> list:
+def _process_pcr_products(lines: List[str]) -> list:
     lines = [line.split("\n") for line in lines if "Experiment" in line]
     products = [_process_one_product(line) for line in lines]
     return products

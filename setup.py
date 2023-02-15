@@ -23,6 +23,8 @@ setup(
     entry_points={"qiime2.plugins": ["q2-exonerate=q2_exonerate.plugin_setup:plugin"]},
     package_data={
         "q2_exonerate": ["citations.bib"],
+        "q2_exonerate.tests": ["data/*"],
+        "q2_exonerate.types.tests": ["data/*"],
     },
     zip_safe=False,
 )
