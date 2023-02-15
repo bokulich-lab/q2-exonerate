@@ -1,0 +1,3 @@
+id	experiment	target	match_orientation	matches_fwd	matches_rev	length	range_min	range_max	start_position	matches_fwd_frac
+ITS9mun_product_1 seq NC_012867.1	ITS9mun	NC_012867.1:filter(unmasked) Candida dubliniensis CD36 chromosome R, complete sequence	forward	17/17	19/19	2072	500	5000	1864982	1
+ITS9mun_product_2 seq NC_042506.1	ITS9mun	NC_042506.1:filter(unmasked) Pichia kudriavzevii chromosome 1, complete sequence	revcomp	17/17	19/19	2040	500	5000	1904	1

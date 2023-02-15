@@ -2,7 +2,7 @@
 {% set version = data.get('version') or 'placehold' %}
 
 package:
-  name: q2-plugin-name
+  name: q2-exonerate
   version: {{ version }}
 
 source:
@@ -17,7 +17,10 @@ requirements:
     - setuptools
 
   run:
+    - exonerate
     - python {{ python }}
+    - q2-types {{ qiime2_epoch }}.*
+    - q2templates {{ qiime2_epoch }}.*
     - qiime2 {{ qiime2_epoch }}.*
 
 test:
@@ -25,12 +28,12 @@ test:
     - coverage
     - pytest-cov
   imports:
-    - q2_plugin_name
-    - qiime2.plugins.plugin_name
+    - q2_exonerate
+    - qiime2.plugins.exonerate
   commands:
-    - pytest --cov q2_plugin_name --pyargs q2_plugin_name
+    - pytest --cov q2_exonerate --pyargs q2_exonerate
 
 about:
-  home: https://github.com/bokulich-lab/q2-plugin-name
+  home: https://github.com/bokulich-lab/q2-exonerate
   license: BSD-3-Clause
   license_family: BSD
