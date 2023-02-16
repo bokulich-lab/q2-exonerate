@@ -15,7 +15,7 @@ You can install q2-exonerate using mamba in an existing QIIME 2 environment by f
 * Activate your QIIME 2 environment (ver 2022.8 or later, see [the official user documentation](https://docs.qiime2.org/)) and install relevant dependencies:
     ```shell
     conda activate qiime2-{ENV_VERSION}
-    mamba install -c bioconda exonerate
+    mamba install -c bioconda -c conda-forge exonerate
     ```
 * Install q2-exonerate:
     ```shell
