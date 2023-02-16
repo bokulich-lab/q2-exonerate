@@ -77,6 +77,9 @@ def _process_one_product(line: List[str]) -> dict:
 def _process_pcr_products(lines: List[str]) -> list:
     lines = [line.split("\n") for line in lines if "Experiment" in line]
     products = [_process_one_product(line) for line in lines]
+    if len(products) == 0:
+        raise ValueError('No hits were found. Check your inputs, primer sequences, '
+                         'and consider adjusting the mismatch tolerance.')
     return products
 
 

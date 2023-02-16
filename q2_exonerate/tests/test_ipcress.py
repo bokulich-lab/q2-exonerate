@@ -69,6 +69,7 @@ class TestIPCRess(TestPluginBase):
         self.pcr_prod_df = pd.read_csv(
             self.get_data_path("pcr_prod_meta.tsv"), sep="\t", index_col=0, header=0
         )
+        self.empty_products = ['-- completed ipcress analysis\n']
 
     def test_calculate_match_frac(self):
         obs = _calculate_match_frac("18/20")
@@ -87,6 +88,10 @@ class TestIPCRess(TestPluginBase):
     def test_process_pcr_products(self):
         obs = _process_pcr_products(self.ipcress_lines[:3])
         self.assertListEqual(obs, self.products)
+
+    def test_process_pcr_products_no_hits(self):
+        with self.assertRaises(ValueError):
+            _process_pcr_products(self.empty_products)
 
     def test_extract_pcr_meta(self):
         obs = _extract_pcr_meta(self.products)
