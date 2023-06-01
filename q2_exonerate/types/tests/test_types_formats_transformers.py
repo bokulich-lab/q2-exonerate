@@ -14,10 +14,10 @@ from qiime2.plugin import ValidationError
 from qiime2.plugin.testing import TestPluginBase
 
 from q2_exonerate.types._format import (
-    IPCRessExperimentFormat,
-    PCRProductMetadataFormat,
     IPCRessExperimentDirFmt,
+    IPCRessExperimentFormat,
     PCRProductMetadataDirFmt,
+    PCRProductMetadataFormat,
 )
 from q2_exonerate.types._type import IPCRessExperiments, PCRProductMetadata
 
@@ -104,6 +104,11 @@ class TestTransformers(TestPluginBase):
         self.pcr_prod_meta_df = pd.read_csv(
             pcr_prod_path, sep="\t", header=0, index_col=0
         )
+
+    def test_import_ipcress_tabulated(self):
+        ipcress_exp_path = self.get_data_path("ipcress_exp_tabs.ipcress")
+        ipcress_exp = IPCRessExperimentFormat(ipcress_exp_path, mode="r")
+        ipcress_exp.validate()
 
     def test_dataframe_to_ipcress_exp(self):
         transformer = self.get_transformer(pd.DataFrame, IPCRessExperimentFormat)

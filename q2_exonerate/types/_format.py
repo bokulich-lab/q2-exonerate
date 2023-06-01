@@ -20,7 +20,7 @@ class IPCRessExperimentFormat(model.TextFileFormat):
     ]
 
     def _validate(self):
-        df = pd.read_csv(str(self), sep=" ", header=None)
+        df = pd.read_csv(str(self), sep=r"\s+", header=None)
 
         if df.shape[1] != 5:
             raise ValidationError(
