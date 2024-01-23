@@ -39,7 +39,7 @@ Currently, only one action is available in the plugin - `simulate-pcr` - it can 
     ```
 2) Then, to simulate a PCR experiment, run the following command:
     ```shell
-    qiime exonerate siulate-pcr \
+    qiime exonerate simulate-pcr \
       --i-experiments ipcress_exp.qza \
       --i-templates <path-to-templates> \
       --o-products pcr_products.qza  \
